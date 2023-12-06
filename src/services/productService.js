@@ -104,68 +104,17 @@ const deleteManyProduct = (ids) => {
   });
 };
 
-const getAllProduct = (limit, page, sort, filter) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const totalProduct = await Product.count();
-
-      if (limit) {
-        const allProductLimit = await Product.find()
-          .limit(limit)
-          .skip(page * limit);
-        resolve({
-          status: "OK",
-          message: "SUCCESS",
-          data: allProductLimit,
-          total: totalProduct,
-          pageCurrent: Number(page + 1),
-          totalPage: Math.ceil(totalProduct / limit),
-        });
-      }
-      if (sort) {
-        const objSort = {};
-        objSort[sort[1]] = sort[0];
-        const allProductSort = await Product.find()
-          .limit(limit)
-          .skip(page * limit)
-          .sort(objSort);
-        resolve({
-          status: "OK",
-          message: "SUCCESS",
-          data: allProductSort,
-          total: totalProduct,
-          pageCurrent: Number(page + 1),
-          totalPage: Math.ceil(totalProduct / limit),
-        });
-      }
-      if (filter) {
-        const label = filter[0];
-        const allProductFilter = await Product.find({
-          [label]: { $regex: filter[1] },
-        })
-          .limit(limit)
-          .skip(page * limit);
-
-        resolve({
-          status: "OK",
-          message: "SUCCESS",
-          data: allProductFilter,
-          total: totalProduct,
-          pageCurrent: Number(page + 1),
-          totalPage: Math.ceil(totalProduct / limit),
-        });
-      }
-
-      const allProduct = await Product.find();
-      resolve({
-        status: "OK",
-        message: "SUCCESS",
-        data: allProduct,
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
+const getAllProduct = async () => {
+  try {
+    const productList = await Product.find();
+    return {
+      status: "OK",
+      message: "SUCCESS",
+      data: productList,
+    };
+  } catch (error) {
+    throw error;
+  }
 };
 const getDetailProduct = (id) => {
   return new Promise(async (resolve, reject) => {
