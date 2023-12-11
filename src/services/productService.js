@@ -106,7 +106,7 @@ const deleteManyProduct = (ids) => {
 
 const getAllProduct = async () => {
   try {
-    const productList = await Product.find();
+    const productList = await Product.find().limit(60);
     return {
       status: "OK",
       message: "SUCCESS",

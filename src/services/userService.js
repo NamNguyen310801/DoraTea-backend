@@ -8,7 +8,7 @@ const createUser = (newUser) => {
       email,
       password,
       confirmPassword,
-      isAdmin = false,
+      role = 3,
       phone = "",
       address = "",
       avatar = "",
@@ -31,7 +31,7 @@ const createUser = (newUser) => {
         email,
         password: hash,
         phone,
-        isAdmin,
+        role,
         address,
         avatar,
       });
@@ -69,11 +69,11 @@ const loginUser = (userLogin) => {
       }
       const access_token = await generalAccessToken({
         id: checkUser.id,
-        isAdmin: checkUser.isAdmin,
+        role: checkUser.role,
       });
       const refresh_token = await generalRefreshToken({
         id: checkUser.id,
-        isAdmin: checkUser.isAdmin,
+        role: checkUser.role,
       });
       resolve({
         status: "OK",
