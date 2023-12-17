@@ -57,15 +57,15 @@ const createOrder = async (newItem) => {
 const getAllOrderDetails = async (userId) => {
   try {
     const userOrders = await Order.find({ user: userId })
-      .populate({
-        path: "orderItems",
-        populate: {
-          path: "product",
-          model: "Product",
-        },
-      })
       .sort({ createdAt: -1 })
       .exec();
+    // .populate({
+    //   path: "orderItems",
+    //   populate: {
+    //     path: "product",
+    //     model: "Product",
+    //   },
+    // });
     if (userOrders === null) {
       return {
         status: "ERR",
@@ -87,15 +87,14 @@ const getAllOrderDetails = async (userId) => {
 };
 const getAllOrder = async () => {
   try {
-    const allOrder = await Order.find()
-      .sort({ createdAt: -1, updatedAt: -1 })
-      .populate({
-        path: "orderItems",
-        populate: {
-          path: "product",
-          model: "Product",
-        },
-      });
+    const allOrder = await Order.find().sort({ createdAt: -1, updatedAt: -1 });
+    // .populate({
+    //   path: "orderItems",
+    //   populate: {
+    //     path: "product",
+    //     model: "Product",
+    //   },
+    // });
     return {
       status: "OK",
       message: "SUCCESS",
@@ -111,16 +110,14 @@ const getAllOrder = async () => {
 };
 const getAllRecentOrder = async () => {
   try {
-    const recentOrder = await Order.find()
-      .sort({ createdAt: -1 })
-      .limit(6)
-      .populate({
-        path: "orderItems",
-        populate: {
-          path: "product",
-          model: "Product",
-        },
-      });
+    const recentOrder = await Order.find().sort({ createdAt: -1 }).limit(6);
+    // .populate({
+    //   path: "orderItems",
+    //   populate: {
+    //     path: "product",
+    //     model: "Product",
+    //   },
+    // });
     return {
       status: "OK",
       message: "SUCCESS",
@@ -136,13 +133,14 @@ const getAllRecentOrder = async () => {
 };
 const getOrderDetails = async (orderId) => {
   try {
-    const order = await Order.findById(orderId).populate({
-      path: "orderItems",
-      populate: {
-        path: "product",
-        model: "Product",
-      },
-    });
+    const order = await Order.findById(orderId);
+    // .populate({
+    //   path: "orderItems",
+    //   populate: {
+    //     path: "product",
+    //     model: "Product",
+    //   },
+    // });
     if (!order) {
       return res.status(404).json({ message: "Không tìm thấy đơn hàng." });
     }
