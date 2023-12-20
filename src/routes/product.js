@@ -18,6 +18,7 @@ router.post(
   authMiddleWare,
   productController.deleteManyProduct
 );
-router.post("/create-review", productController.updateRating);
+router.post("/create-review", productController.createRating);
+router.put("/updateProduct-rating", productController.updateProductRating);
 
 module.exports = router;

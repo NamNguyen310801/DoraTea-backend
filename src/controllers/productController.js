@@ -132,7 +132,7 @@ const getAllDiscount = async (req, res) => {
     });
   }
 };
-const updateRating = async (req, res) => {
+const createRating = async (req, res) => {
   try {
     const data = req.body;
     if (!data?.productId || !data?.rating) {
@@ -141,7 +141,24 @@ const updateRating = async (req, res) => {
         message: "Vui lòng nhập đầy đủ thông tin",
       });
     }
-    const response = await productService.updateRating(data);
+    const response = await productService.createRating(data);
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(404).json({
+      message: error,
+    });
+  }
+};
+const updateProductRating = async (req, res) => {
+  try {
+    const data = req.body;
+    if (!data?.productId) {
+      return res.status(200).json({
+        status: "ERROR",
+        message: "Vui lòng nhập đầy đủ thông tin",
+      });
+    }
+    const response = await productService.updateProductRating(data?.productId);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(404).json({
@@ -159,5 +176,6 @@ module.exports = {
   getWithCategory,
   getAllPopular,
   getAllDiscount,
-  updateRating,
+  createRating,
+  updateProductRating,
 };

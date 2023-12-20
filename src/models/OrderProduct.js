@@ -9,6 +9,8 @@ const orderSchema = new mongoose.Schema(
           ref: "Product",
           required: true,
         },
+        description: { type: String },
+        sizeFee: { type: Number, default: 0 },
       },
     ],
     shippingAddress: {

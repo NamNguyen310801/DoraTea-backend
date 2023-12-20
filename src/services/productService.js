@@ -186,7 +186,7 @@ const getAllDiscount = () => {
     }
   });
 };
-const updateRating = async (data) => {
+const createRating = async (data) => {
   try {
     const { productId, rating, description = "" } = data;
     const newReview = await Review.create({
@@ -200,7 +200,7 @@ const updateRating = async (data) => {
         message: "Lỗi xảy ra khi tạo đánh giá",
       };
     }
-    await updateProductRating(productId);
+
     return {
       status: "OK",
       message: "Đánh giá sản phẩm thành công",
@@ -246,5 +246,6 @@ module.exports = {
   getWithCategory,
   getAllPopular,
   getAllDiscount,
-  updateRating,
+  createRating,
+  updateProductRating,
 };

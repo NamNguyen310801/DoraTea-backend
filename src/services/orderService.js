@@ -59,13 +59,6 @@ const getAllOrderDetails = async (userId) => {
     const userOrders = await Order.find({ user: userId })
       .sort({ createdAt: -1 })
       .exec();
-    // .populate({
-    //   path: "orderItems",
-    //   populate: {
-    //     path: "product",
-    //     model: "Product",
-    //   },
-    // });
     if (userOrders === null) {
       return {
         status: "ERR",
@@ -88,13 +81,6 @@ const getAllOrderDetails = async (userId) => {
 const getAllOrder = async () => {
   try {
     const allOrder = await Order.find().sort({ createdAt: -1, updatedAt: -1 });
-    // .populate({
-    //   path: "orderItems",
-    //   populate: {
-    //     path: "product",
-    //     model: "Product",
-    //   },
-    // });
     return {
       status: "OK",
       message: "SUCCESS",
@@ -111,13 +97,6 @@ const getAllOrder = async () => {
 const getAllRecentOrder = async () => {
   try {
     const recentOrder = await Order.find().sort({ createdAt: -1 }).limit(6);
-    // .populate({
-    //   path: "orderItems",
-    //   populate: {
-    //     path: "product",
-    //     model: "Product",
-    //   },
-    // });
     return {
       status: "OK",
       message: "SUCCESS",
@@ -134,13 +113,6 @@ const getAllRecentOrder = async () => {
 const getOrderDetails = async (orderId) => {
   try {
     const order = await Order.findById(orderId);
-    // .populate({
-    //   path: "orderItems",
-    //   populate: {
-    //     path: "product",
-    //     model: "Product",
-    //   },
-    // });
     if (!order) {
       return res.status(404).json({ message: "Không tìm thấy đơn hàng." });
     }
@@ -225,14 +197,14 @@ const getOrdersMonthCount = async () => {
     const result = await Order.aggregate(pipeline);
     const currentYear = new Date().getFullYear();
     const orderCountByYearMonth = {};
-    // Initialize the object with counts set to 0 for all months
+    // khơi tạo dữ liệu theo năm
     orderCountByYearMonth.year = currentYear;
     orderCountByYearMonth.data = {};
     for (let month = 1; month <= 12; month++) {
       orderCountByYearMonth.data[month] = 0;
     }
 
-    // Update counts based on the result
+    // cập nhật dữ liệu
     result.forEach((item) => {
       const { month, count } = item;
       orderCountByYearMonth.data[month] = count;
@@ -261,11 +233,9 @@ const updateOrder = async (orderId, data) => {
         message: "Đơn hàng không tồn tại !",
       };
     }
-    const updatedOrder = await Order.findByIdAndUpdate(
-      orderId,
-      data,
-      { new: true } // To return the updated order after the update
-    );
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, data, {
+      new: true,
+    });
     return {
       status: "OK",
       message: "Đã cập nhật đơn hàng thành công",
@@ -325,7 +295,7 @@ const successOrder = async (orderId) => {
       const productToUpdate = await Product.findById(product).exec();
       if (productToUpdate) {
         // Cập nhật trường "selled" của sản phẩm
-        productToUpdate.selled = (productToUpdate.selled || 0) + quantity;
+        productToUpdate.selled = (productToUpdate?.selled || 0) + quantity;
         // Lưu lại sản phẩm
         await productToUpdate.save();
       }
