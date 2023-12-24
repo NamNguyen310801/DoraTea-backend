@@ -16,6 +16,8 @@ const cartProductSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    description: { type: String },
+    sizeFee: { type: Number, default: 0 },
   },
   {
     timestamps: true,
